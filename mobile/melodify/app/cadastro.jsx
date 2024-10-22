@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, TextInput, Pressable, Modal } from 'react-native';
 import { Calendar } from 'react-native-calendars';
+import { Link } from 'expo-router';
 
-export default registro = () => {
+export default function registro(){
   const [nome, setNome] = useState('');
   const [sobrenome, setSobrenome] = useState('');
   const [email, setEmail] = useState('');
@@ -45,7 +46,7 @@ export default registro = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.inputcontainer}>
-        <Text style={styles.title}>Registro</Text>
+        <Text style={styles.title}>Cadastro</Text>
         <Text style={styles.label}>Nome:</Text>
         <TextInput
           style={styles.input}
@@ -87,7 +88,7 @@ export default registro = () => {
             value={dataNascimento}
             placeholder="Selecione a sua data de nascimento"
             placeholderTextColor="#ccc"
-            editable={false} // Torna o campo não editável diretamente
+            editable={false} 
           />
         </Pressable>
 
@@ -109,7 +110,7 @@ export default registro = () => {
         </Modal>
 
         <View style={styles.pressableContainer}>
-          <Pressable style={styles.pressable} onPress={registrarUsuario}>
+          <Pressable href="./inicio" style={styles.pressable} onPress={registrarUsuario}>
             <Text style={styles.pressableText}>Cadastrar</Text>
           </Pressable>
         </View>
