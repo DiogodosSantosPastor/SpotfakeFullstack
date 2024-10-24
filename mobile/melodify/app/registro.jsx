@@ -1,29 +1,19 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TextInput, Pressable, Modal } from 'react-native';
-import { Calendar } from 'react-native-calendars';
+import { StyleSheet, Text, View, SafeAreaView, TextInput, Pressable, Alert } from 'react-native';
 import { Link } from 'expo-router';
 
-export default function registro(){
-  const [nome, setNome] = useState('');
-  const [sobrenome, setSobrenome] = useState('');
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [dataNascimento, setDataNascimento] = useState('');
-  const [modalVisible, setModalVisible] = useState(false);
+const registrarUsuario = async (nome, sobrenome, email, senha, dataNascimento) => {
+  if (!nome || !sobrenome || !email || !senha || !dataNascimento) {
+    Alert.alert('Erro', 'Todos os campos devem ser preenchidos');
+    return;
+  }
 
-  console.log(nome, sobrenome, email, senha, dataNascimento);
-
-  const registrarUsuario = async function () {
-    if (!nome || !sobrenome || !email || !senha || !dataNascimento) {
-      console.log('Todos os campos devem ser preenchidos');
-      return;
-    }
-
-    const resposta = await fetch('', {
+  try {
+    const resposta = await fetch('http://localhost:8000/registro', {
       method: 'POST',
       headers: {
-        Accept: 'application/json',
         'Content-Type': 'application/json',
+        'Accept': '*/*',
       },
       body: JSON.stringify({
         nome,
@@ -34,14 +24,24 @@ export default function registro(){
       }),
     });
 
-    if (!resposta) {
-      console.log('Erro na requisição');
-    } else if (resposta.status === 200) {
-      console.log('Usuário criado com sucesso');
+    if (resposta.status === 200) {
+      Alert.alert('Sucesso', 'Usuário criado com sucesso');
     } else {
-      console.log('Ocorreu um erro');
+      Alert.alert('Erro', 'Ocorreu um erro ao criar o usuário');
     }
-  };
+  } catch (error) {
+    Alert.alert('Erro', 'Erro na requisição');
+  }
+};
+
+export default function Registro() {
+  const [nome, setNome] = useState('');
+  const [sobrenome, setSobrenome] = useState('');
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  const [dataNascimento, setDataNascimento] = useState('');
+
+  console.log(nome, sobrenome, email, senha, dataNascimento);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -82,42 +82,28 @@ export default function registro(){
           placeholderTextColor="#ccc"
         />
         <Text style={styles.label}>Data de Nascimento:</Text>
-        <Pressable onPress={() => setModalVisible(true)}>
-          <TextInput
-            style={styles.input}
-            value={dataNascimento}
-            placeholder="Selecione a sua data de nascimento"
-            placeholderTextColor="#ccc"
-            editable={false} 
-          />
-        </Pressable>
-
-        <Modal visible={modalVisible} animationType="slide" transparent={true}>
-          <View style={styles.modalContainer}>
-            <Calendar
-              onDayPress={(day) => {
-                setDataNascimento(day.dateString);
-                setModalVisible(false);
-              }}
-              markedDates={{
-                [dataNascimento]: { selected: true, marked: true, selectedColor: '#4b5ae1' },
-              }}
-            />
-            <Pressable onPress={() => setModalVisible(false)} style={styles.closeButton}>
-              <Text style={styles.closeButtonText}>Fechar</Text>
-            </Pressable>
-          </View>
-        </Modal>
+        <TextInput
+          style={styles.input}
+          onChangeText={setDataNascimento}
+          value={dataNascimento}
+          placeholder="dd/mm/aaaa"
+          placeholderTextColor="#ccc"
+        />
 
         <View style={styles.pressableContainer}>
-          <Pressable href="./inicio" style={styles.pressable} onPress={registrarUsuario}>
-            <Text style={styles.pressableText}>Cadastrar</Text>
+          <Pressable
+            style={styles.pressable}
+            onPress={() => registrarUsuario(nome, sobrenome, email, senha, dataNascimento)}
+          >
+            <Link href="/inicio" style={styles.pressableText}>
+              Cadastrar
+            </Link>
           </Pressable>
         </View>
       </View>
     </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -157,22 +143,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#4b5ae1',
     marginBottom: 20,
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-  },
-  closeButton: {
-    marginTop: 10,
-    padding: 10,
-    backgroundColor: '#4b5ae1',
-    borderRadius: 8,
-  },
-  closeButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
   },
   pressableContainer: {
     width: '80%',
