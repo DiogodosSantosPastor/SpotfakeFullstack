@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, TextInput, Pressable, Alert } from 'react-native';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 
-const registrarUsuario = async (nome, sobrenome, email, senha, dataNascimento) => {
+const registrarUsuario = async (nome, sobrenome, email, senha, dataNascimento, router) => {
   if (!nome || !sobrenome || !email || !senha || !dataNascimento) {
     Alert.alert('Erro', 'Todos os campos devem ser preenchidos');
     return;
@@ -26,6 +26,8 @@ const registrarUsuario = async (nome, sobrenome, email, senha, dataNascimento) =
 
     if (resposta.status === 200) {
       Alert.alert('Sucesso', 'Usuário criado com sucesso');
+      // Redireciona o usuário para a próxima página após o registro bem-sucedido
+      router.push('./inicio');
     } else {
       Alert.alert('Erro', 'Ocorreu um erro ao criar o usuário');
     }
@@ -40,8 +42,8 @@ export default function Registro() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [dataNascimento, setDataNascimento] = useState('');
-
-  console.log(nome, sobrenome, email, senha, dataNascimento);
+  
+  const router = useRouter(); // Instancia o router para navegar entre páginas
 
   return (
     <SafeAreaView style={styles.container}>
@@ -90,14 +92,18 @@ export default function Registro() {
           placeholderTextColor="#ccc"
         />
 
+        <Pressable style={styles.labelCadastro}>
+          <Link href="./login" style={styles.pressableText}>
+            Já tem Conta?
+          </Link>
+        </Pressable>
+
         <View style={styles.pressableContainer}>
           <Pressable
             style={styles.pressable}
-            onPress={() => registrarUsuario(nome, sobrenome, email, senha, dataNascimento)}
+            onPress={() => registrarUsuario(nome, sobrenome, email, senha, dataNascimento, router)}
           >
-            <Link href="/inicio" style={styles.pressableText}>
-              Cadastrar
-            </Link>
+            <Text style={styles.pressableText}>Cadastrar</Text>
           </Pressable>
         </View>
       </View>
@@ -161,9 +167,17 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
+  labelCadastro: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
   pressableText: {
     color: '#4b5ae1',
     fontSize: 18,
     fontWeight: 'bold',
+    textDecorationLine: 'underline',
   },
 });

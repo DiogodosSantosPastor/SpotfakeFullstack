@@ -1,36 +1,42 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TextInput, Pressable } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TextInput, Pressable, Alert } from 'react-native';
+import { Link, useRouter } from 'expo-router';
 
-export default login = () => {
+export default function Login() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
-
-  console.log(email, senha);
+  const router = useRouter(); // Instancia o router para navegação
 
   const realizarLogin = async function () {
     if (!email || !senha) {
-      console.log('Email e senha são obrigatórios');
+      Alert.alert('Erro', 'Email e senha são obrigatórios');
       return;
     }
 
-    const resposta = await fetch('', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email,
-        senha,
-      }),
-    });
+    try {
+      const resposta = await fetch('http://localhost:8000/login', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          senha,
+        }),
+      });
 
-    if (!resposta) {
-      console.log('Erro na requisição');
-    } else if (resposta.status === 200) {
-      console.log('Login realizado com sucesso');
-    } else {
-      console.log('Credenciais incorretas');
+      if (resposta.ok) {
+        Alert.alert('Sucesso', 'Login realizado com sucesso');
+        // Redireciona o usuário para a página de início após login bem-sucedido
+        router.push('./inicio');
+      } else if (resposta.status === 401) {
+        Alert.alert('Erro', 'Credenciais incorretas');
+      } else {
+        Alert.alert('Erro', 'Ocorreu um erro inesperado');
+      }
+    } catch (error) {
+      Alert.alert('Erro', 'Erro na requisição');
     }
   };
 
@@ -57,6 +63,12 @@ export default login = () => {
           placeholderTextColor="#ccc"
         />
 
+        <Pressable style={styles.labelCadastro}>
+          <Link href="./registro" style={styles.pressableText}>
+            Criar Conta?
+          </Link>
+        </Pressable>
+
         <View style={styles.pressableContainer}>
           <Pressable style={styles.pressable} onPress={realizarLogin}>
             <Text style={styles.pressableText}>Entrar</Text>
@@ -65,7 +77,7 @@ export default login = () => {
       </View>
     </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -123,9 +135,17 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
+  labelCadastro: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
   pressableText: {
     color: '#4b5ae1',
     fontSize: 18,
     fontWeight: 'bold',
+    textDecorationLine: 'underline',
   },
 });
