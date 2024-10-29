@@ -2,7 +2,7 @@
 import bcryptjs from "bcryptjs";
 import { User } from "../db.js";
 
-const usuarios = async (req, res) => {
+const usuarios = async (res) => {
 
 }
 
