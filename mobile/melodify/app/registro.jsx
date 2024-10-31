@@ -26,7 +26,7 @@ const registrarUsuario = async (nome, sobrenome, email, senha, dataNascimento, r
 
     if (resposta.status === 200) {
       Alert.alert('Sucesso', 'Usuário criado com sucesso');
-      // Redireciona o usuário para a próxima página após o registro bem-sucedido
+
       router.push('./inicio');
     } else {
       Alert.alert('Erro', 'Ocorreu um erro ao criar o usuário');
@@ -43,7 +43,7 @@ export default function Registro() {
   const [senha, setSenha] = useState('');
   const [dataNascimento, setDataNascimento] = useState('');
   
-  const router = useRouter(); // Instancia o router para navegar entre páginas
+  const router = useRouter(); 
 
   return (
     <SafeAreaView style={styles.container}>

@@ -1,42 +1,31 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, TextInput, Pressable, Alert } from 'react-native';
-import { Link, useRouter } from 'expo-router';
+import { Link } from 'expo-router';
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const router = useRouter(); // Instancia o router para navegação
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
 
-  const realizarLogin = async function () {
-    if (!email || !senha) {
-      Alert.alert('Erro', 'Email e senha são obrigatórios');
-      return;
-    }
-
+  const realizarLogin = async () => {
     try {
-      const resposta = await fetch('http://localhost:8000/login', {
-        method: 'POST',
+      const resposta = await fetch("http://localhost:8000/autenticacao/login", {
+        method: "POST",
         headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
+          "Accept": "*/*",
         },
         body: JSON.stringify({
-          email,
-          senha,
+          "email": email,
+          "senha": senha,
         }),
       });
 
-      if (resposta.ok) {
-        Alert.alert('Sucesso', 'Login realizado com sucesso');
-        // Redireciona o usuário para a página de início após login bem-sucedido
-        router.push('./inicio');
-      } else if (resposta.status === 401) {
-        Alert.alert('Erro', 'Credenciais incorretas');
-      } else {
-        Alert.alert('Erro', 'Ocorreu um erro inesperado');
-      }
+      const mensagem = await resposta.text();
+      alert(mensagem);
+
     } catch (error) {
-      Alert.alert('Erro', 'Erro na requisição');
+      console.error("Error during login:", error);
+      alert("Erro ao logar usuário");
     }
   };
 
@@ -64,7 +53,7 @@ export default function Login() {
         />
 
         <Pressable style={styles.labelCadastro}>
-          <Link href="./registro" style={styles.pressableText}>
+          <Link href="http://localhost:8081/registro" style={styles.pressableText}>
             Criar Conta?
           </Link>
         </Pressable>
