@@ -4,4 +4,4 @@ import { usuarios } from "../controlador/UserCont.js"
 
 const rotasUser = express.Router()
 
-rotasUser.get('/', registro )
+rotasUser.get('/user', usuarios )
