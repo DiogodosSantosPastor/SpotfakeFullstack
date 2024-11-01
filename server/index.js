@@ -3,6 +3,7 @@ import cors from "cors";
 import {rotas} from "./roteamento/rotasAuth.js"
 import { rotasUser } from "./roteamento/rotasUser.js";
 
+
 const app = Express()
 app.use(Express.json())
 app.use(cors())

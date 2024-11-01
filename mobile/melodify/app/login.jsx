@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, TextInput, Pressable, Alert } from 'react-native';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -20,7 +20,14 @@ export default function Login() {
         }),
       });
 
-      const mensagem = await resposta.text();
+      const messagem = await response.text();
+      alert(messagem);
+      if (messagem === "Usuario logado com sucesso!") {
+        router.push("/inicio")
+      }
+      else if (messagem === "Admin logado com sucesso!") {
+        router.push("/pagadmin")
+      }
       alert(mensagem);
 
     } catch (error) {
