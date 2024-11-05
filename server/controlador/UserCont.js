@@ -16,5 +16,21 @@ const Oneusuario = async (req, res) => {
     res.send(findUsuario)
 }
 
+const Deletaruser = async (req, res) => {
+    const { email } = req.body
 
-export {Allusuario, Oneusuario}
+    if (!email) {
+        res.send('Insira o email do usuário na qual você gostaria de deletar.');
+        return
+    }
+    
+    const ByeUser = await User.destroy({ where: { email: email } })
+    if (ByeUser) {
+        res.send("Usuário deletado");
+    } else {
+        res.send("Usuário não encontrado.");
+    }
+}
+
+
+export {Allusuario, Oneusuario, Deletaruser }

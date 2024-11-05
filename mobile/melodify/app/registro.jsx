@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, TextInput, Pressable, Alert } from 'react-native';
-import { Link, useRouter } from 'expo-router';
+import { Link, useRouter, router } from 'expo-router';
 
-const registrarUsuario = async (nome, sobrenome, email, senha, dataNascimento, router) => {
+const registrarUsuario = async () => {
+  const [nome, setNome] = useState('');
+    const [sobrenome, setSobrenome] = useState('');
+    const [email, setEmail] = useState('');
+    const [senha, setSenha] = useState('');
+    const [dataNascimento, setDataNascimento] = useState('');
+
   if (!nome || !sobrenome || !email || !senha || !dataNascimento) {
     Alert.alert('Erro', 'Todos os campos devem ser preenchidos');
     return;
@@ -16,33 +22,28 @@ const registrarUsuario = async (nome, sobrenome, email, senha, dataNascimento, r
         'Accept': '*/*',
       },
       body: JSON.stringify({
-        nome,
-        sobrenome,
-        email,
-        senha,
-        dataNascimento,
+        'nome': nome, 
+        'sobrenome': sobrenome,
+        'email': email,
+        'senha': senha,
+        'dataNascimento': dataNascimento,
       }),
     });
 
-    if (resposta.status === 200) {
-      Alert.alert('Sucesso', 'Usuário criado com sucesso');
+    const message = await response.text();
+        alert(message);
 
-      router.push('./inicio');
-    } else {
-      Alert.alert('Erro', 'Ocorreu um erro ao criar o usuário');
-    }
-  } catch (error) {
-    Alert.alert('Erro', 'Erro na requisição');
-  }
+        if (message === "Usuário registrado com sucesso!"){
+          router.push("/Login")
+        }
+
+    } catch (error) {
+        console.error('Error during signup:', error);
+        alert('Erro ao criar usuário');
+    } 
 };
 
 export default function Registro() {
-  const [nome, setNome] = useState('');
-  const [sobrenome, setSobrenome] = useState('');
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [dataNascimento, setDataNascimento] = useState('');
-  
   const router = useRouter(); 
 
   return (
@@ -52,8 +53,8 @@ export default function Registro() {
         <Text style={styles.label}>Nome:</Text>
         <TextInput
           style={styles.input}
-          onChangeText={setNome}
           value={nome}
+          onChangeText={setNome}
           placeholder="Insira o seu nome aqui"
           placeholderTextColor="#ccc"
         />
