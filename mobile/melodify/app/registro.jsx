@@ -1,50 +1,43 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, TextInput, Pressable, Alert } from 'react-native';
-import { Link, useRouter, router } from 'expo-router';
-
-const registrarUsuario = async () => {
-  const [nome, setNome] = useState('');
-    const [sobrenome, setSobrenome] = useState('');
-    const [email, setEmail] = useState('');
-    const [senha, setSenha] = useState('');
-    const [dataNascimento, setDataNascimento] = useState('');
-
-  if (!nome || !sobrenome || !email || !senha || !dataNascimento) {
-    Alert.alert('Erro', 'Todos os campos devem ser preenchidos');
-    return;
-  }
-
-  try {
-    const resposta = await fetch('http://localhost:8000/registro', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': '*/*',
-      },
-      body: JSON.stringify({
-        'nome': nome, 
-        'sobrenome': sobrenome,
-        'email': email,
-        'senha': senha,
-        'dataNascimento': dataNascimento,
-      }),
-    });
-
-    const message = await response.text();
-        alert(message);
-
-        if (message === "Usuário registrado com sucesso!"){
-          router.push("/Login")
-        }
-
-    } catch (error) {
-        console.error('Error during signup:', error);
-        alert('Erro ao criar usuário');
-    } 
-};
+import { Link, useRouter } from 'expo-router';
 
 export default function Registro() {
+  const [nome, setNome] = useState('');
+  const [sobrenome, setSobrenome] = useState('');
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  const [dataNascimento, setDataNascimento] = useState('');
   const router = useRouter(); 
+
+  const registrarUsuario = async () => {
+    try {
+      const resposta = await fetch('http://localhost:8000/autenticacao/registro', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': '*/*',
+        },
+        body: JSON.stringify({
+          "nome": nome,
+          "sobrenome": sobrenome,
+          "email": email,
+          "senha": senha,
+          "dataNascimento": dataNascimento,
+        }),
+      });
+
+      const message = await resposta.text();
+      alert(message);
+
+      if (message === "Usuário registrado com sucesso!") {
+        router.push('/Inicio');
+      }
+    } catch (error) {
+      console.error('Erro ao registrar usuário:', error);
+      alert('Erro ao criar usuário');
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -99,14 +92,11 @@ export default function Registro() {
           </Link>
         </Pressable>
 
-        <View style={styles.pressableContainer}>
-          <Pressable
-            style={styles.pressable}
-            onPress={() => registrarUsuario(nome, sobrenome, email, senha, dataNascimento, router)}
-          >
-            <Text style={styles.pressableText}>Cadastrar</Text>
-          </Pressable>
-        </View>
+        <Pressable style={styles.pressable} onPress={registrarUsuario} >
+          <Text style={styles.pressableText}>Cadastrar</Text>
+        </Pressable>
+        
+        
       </View>
     </SafeAreaView>
   );
@@ -151,22 +141,26 @@ const styles = StyleSheet.create({
     color: '#4b5ae1',
     marginBottom: 20,
   },
-  pressableContainer: {
-    width: '80%',
-    marginTop: 20,
-    borderColor: '#4b5ae1',
-    borderWidth: 3,
-  },
   pressable: {
-    backgroundColor: '#12163a',
+    backgroundColor: '#4b5ae1', 
     paddingVertical: 15,
+    paddingHorizontal: 30,
     borderRadius: 8,
+    marginTop: 20, 
+    width: '100%',
     alignItems: 'center',
+    justifyContent: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  pressableText: {
+    color: '#fff', 
+    fontSize: 18,
+    fontWeight: 'bold',
+    letterSpacing: 1, 
   },
   labelCadastro: {
     color: '#fff',
@@ -174,11 +168,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
     textAlign: 'center',
-  },
-  pressableText: {
-    color: '#4b5ae1',
-    fontSize: 18,
-    fontWeight: 'bold',
-    textDecorationLine: 'underline',
   },
 });

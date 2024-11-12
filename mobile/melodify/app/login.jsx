@@ -15,8 +15,8 @@ export default function Login() {
           "Accept": "*/*",
         },
         body: JSON.stringify({
-          "email": email,
-          "senha": senha,
+          email: email,
+          senha: senha,
         }),
       });
 

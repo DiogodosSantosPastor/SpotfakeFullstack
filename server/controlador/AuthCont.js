@@ -20,7 +20,7 @@ const registro = async (req, res) => {
 
     const teste = await User.create({nome, sobrenome, email, senha: senhaCriptografada, dataNascimento})
     console.log(email)
-    res.send('usuario criado')
+    res.send('Usuario registrado com sucesso!')
 }
 
 
