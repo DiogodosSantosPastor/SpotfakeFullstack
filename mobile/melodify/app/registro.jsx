@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TextInput, Pressable, Alert } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TextInput, Pressable } from 'react-native';
 import { Link, useRouter } from 'expo-router';
 
 export default function Registro() {
@@ -27,15 +27,13 @@ export default function Registro() {
         }),
       });
 
-      const message = await resposta.text();
-      alert(message);
-
-      if (message === "Usuário registrado com sucesso!") {
+      if (resposta.ok) {
         router.push('/Inicio');
+      } else {
+        console.error('Erro ao registrar usuário:', await resposta.text());
       }
     } catch (error) {
       console.error('Erro ao registrar usuário:', error);
-      alert('Erro ao criar usuário');
     }
   };
 
@@ -91,7 +89,7 @@ export default function Registro() {
             Já tem Conta?
           </Link>
         </Pressable>
-
+    
         <Pressable style={styles.pressable} onPress={registrarUsuario} >
           <Text style={styles.pressableText}>Cadastrar</Text>
         </Pressable>

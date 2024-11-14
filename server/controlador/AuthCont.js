@@ -54,15 +54,14 @@ const login =  async (req, res) => {
     console.log(token)
 
 
-    res.send({
-        msg: "ok usuario logado",
-        tokenJWT: token
-    })
-    if(userExiste.email === "admin" && userExiste.email === "admin"){
+    res.send(
+        "Usuario logado com sucesso"
+    )
+    if(userExiste.email === "adm" && userExiste.email === "adm"){
         res.send('Admin logado com sucesso!')
     }
     else{
-        res.send('Usuario logado com sucesso!')
+        res.send('Usuario logado com sucesso')
     }
 }
 export { registro, login }

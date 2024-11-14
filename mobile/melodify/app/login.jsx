@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TextInput, Pressable, Alert } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TextInput, Pressable } from 'react-native';
 import { Link, router } from 'expo-router';
 
 export default function Login() {
@@ -15,24 +15,19 @@ export default function Login() {
           "Accept": "*/*",
         },
         body: JSON.stringify({
-          email: email,
-          senha: senha,
+          "email": email,
+          "senha": senha
         }),
       });
 
-      const messagem = await response.text();
-      alert(messagem);
-      if (messagem === "Usuario logado com sucesso!") {
-        router.push("/inicio")
-      }
-      else if (messagem === "Admin logado com sucesso!") {
-        router.push("/pagadmin")
-      }
-      alert(mensagem);
+      const mensagem = await resposta.text();
+
+      if (mensagem === "Usuario logado com sucesso") {
+        router.push("/Inicio");
+      } 
 
     } catch (error) {
-      console.error("Error during login:", error);
-      alert("Erro ao logar usuário");
+      console.error("Erro ao logar usuário:", error);
     }
   };
 
@@ -60,16 +55,15 @@ export default function Login() {
         />
 
         <Pressable style={styles.labelCadastro}>
-          <Link href="http://localhost:8081/registro" style={styles.pressableText}>
+          <Link href="/registro" style={styles.pressableText}>
             Criar Conta?
           </Link>
         </Pressable>
 
-        <View style={styles.pressableContainer}>
-          <Pressable style={styles.pressable} onPress={realizarLogin}>
-            <Text style={styles.pressableText}>Entrar</Text>
-          </Pressable>
-        </View>
+        <Pressable style={styles.pressable} onPress={realizarLogin}>
+          <Text style={styles.pressableText}>Entrar</Text>
+        </Pressable>
+        
       </View>
     </SafeAreaView>
   );
@@ -114,17 +108,15 @@ const styles = StyleSheet.create({
     color: '#4b5ae1',
     marginBottom: 20,
   },
-  pressableContainer: {
-    width: '80%',
-    marginTop: 20,
-    borderColor: '#4b5ae1',
-    borderWidth: 3,
-  },
   pressable: {
-    backgroundColor: '#12163a',
+    backgroundColor: '#4b5ae1', 
     paddingVertical: 15,
+    paddingHorizontal: 30,
     borderRadius: 8,
+    marginTop: 20, 
+    width: '100%',
     alignItems: 'center',
+    justifyContent: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
@@ -139,9 +131,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   pressableText: {
-    color: '#4b5ae1',
+    color: '#fff', 
     fontSize: 18,
     fontWeight: 'bold',
-    textDecorationLine: 'underline',
+    letterSpacing: 1, 
   },
 });

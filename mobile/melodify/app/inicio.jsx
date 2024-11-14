@@ -31,7 +31,7 @@ export default function Melodify() {
       <View style={styles.header}>
         <Text style={styles.title}>Melodify</Text>
         <Ionicons name="search-outline" size={24} color="white" />
-        <Ionicons name="settings-outline" size={24} color="white" />
+        <Ionicons name="settings-outline" size={24} color="white" href="./config"/>
       </View>
     
       <Text style={styles.sectionTitle}>Artistas Populares</Text>
