@@ -64,4 +64,6 @@ const login =  async (req, res) => {
         res.send('Usuario logado com sucesso')
     }
 }
+
+
 export { registro, login }

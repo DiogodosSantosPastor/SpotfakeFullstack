@@ -1,10 +1,16 @@
 import React from 'react';
 import { StyleSheet, View, Text, Pressable } from 'react-native';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons'; 
 
 export default function Configuracao() {
+
   return (
     <View style={styles.container}>
+      <Pressable style={styles.backButton}>
+        <Ionicons name="arrow-back" size={30} href="./inicio" color="#fff" />
+      </Pressable>
+
       <Text style={styles.title}>Configurações</Text>
 
       <View style={styles.gridContainer}>
@@ -37,11 +43,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#12163a',
     padding: 20,
   },
+  backButton: {
+    position: 'absolute',
+    top: 50,
+    left: 20,
+    zIndex: 1,
+  },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
     color: '#fff',
     marginBottom: 20,
+    marginTop: 80, 
   },
   gridContainer: {
     flexDirection: 'row',
