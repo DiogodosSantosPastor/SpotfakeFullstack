@@ -28,7 +28,7 @@ export default function Registro() {
       });
 
       if (resposta.ok) {
-        router.push('/Inicio');
+        router.push('/Home/inicio');
       } else {
         console.error('Erro ao registrar usuário:', await resposta.text());
       }

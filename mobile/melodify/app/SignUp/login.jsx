@@ -23,8 +23,9 @@ export default function Login() {
       const mensagem = await resposta.text();
 
       if (mensagem === "Usuario logado com sucesso") {
-        router.push("/Inicio");
+        router.push("/Home/inicio");
       } 
+      
 
     } catch (error) {
       console.error("Erro ao logar usuário:", error);
@@ -55,7 +56,7 @@ export default function Login() {
         />
 
         <Pressable style={styles.labelCadastro}>
-          <Link href="/registro" style={styles.pressableText}>
+          <Link href="./registro" style={styles.pressableText}>
             Criar Conta?
           </Link>
         </Pressable>

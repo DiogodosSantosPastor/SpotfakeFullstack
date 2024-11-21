@@ -15,7 +15,7 @@ export default function Configuracao() {
 
       <View style={styles.gridContainer}>
         <Pressable style={styles.gridItem}>
-          <Link href="/perfil" style={styles.gridItemText}>
+          <Link href="./perfil" style={styles.gridItemText}>
             Perfil
           </Link>
         </Pressable>

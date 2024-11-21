@@ -57,7 +57,7 @@ const login =  async (req, res) => {
     res.send(
         "Usuario logado com sucesso"
     )
-    if(userExiste.email === "adm" && userExiste.email === "adm"){
+    if(userExiste.nome === "adm" && userExiste.email === "adm"){
         res.send('Admin logado com sucesso!')
     }
     else{
