@@ -1,7 +1,8 @@
 import Express from "express";
 import cors from "cors";
-import {rotas} from "./roteamento/rotasAuth.js"
+import { rotas } from "./roteamento/rotasAuth.js"
 import { rotasUser } from "./roteamento/rotasUser.js";
+import { rotasArt } from "./roteamento/rotasArt.js";
 import { criarTabelas } from "./db.js";
 
 const app = Express()
@@ -11,5 +12,6 @@ app.use(cors())
 
 app.use('/autenticacao', rotas)
 app.use('/pesquisa', rotasUser)
+app.use('/art', rotasArt)
 
 app.listen(8000)

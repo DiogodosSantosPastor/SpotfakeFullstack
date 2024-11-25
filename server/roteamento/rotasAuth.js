@@ -9,4 +9,4 @@ rotas.post('/registro', registro )
 
 rotas.post('/login', login)
 
-export {rotas}
+export { rotas }

@@ -38,15 +38,17 @@ export default function PagAdmin() {
 
     const handleDeleteUser = async () => {
         try {
-            const response = await fetch(`http://localhost:8000/pesquisa/delete/${email}`, {
+            const response = await fetch(`http://localhost:8000/pesquisa/delete`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
                 },
+                body: JSON.stringify({ email }) 
             });
             if (response.ok) {
                 alert("Usuário deletado com sucesso!");
-                setEmail("");
+                setEmail(""); 
+                setModalVisible(false); 
             } else {
                 alert("Erro ao deletar usuário");
             }
@@ -79,9 +81,9 @@ export default function PagAdmin() {
                             style={styles.input}
                             placeholder="Digite o email do usuário"
                             placeholderTextColor="#ccc"
-                            value={emailToDelete}
-                            onChangeText={setEmailToDelete}
-                        />
+                            value={email}
+                            onChangeText={setEmail}
+                            />
                         <Pressable style={styles.pressable} onPress={handleDeleteUser}>
                             <Text style={styles.pressable_text}>Deletar</Text>
                         </Pressable>
@@ -147,6 +149,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#fff',
         marginBottom: 20,
+        textAlign: 'center',
     },
     pressable: {
         backgroundColor: '#4b5ae1',
@@ -155,40 +158,78 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         width: '100%',
         alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
     },
     pressable_text: {
         color: '#fff',
         fontSize: 18,
+        fontWeight: 'bold',
     },
     modal_scrollview: {
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
     },
     modal_container: {
         margin: 50,
-        backgroundColor: '#292e5a',
+        backgroundColor: '#1f1f3d',
         padding: 20,
-        borderRadius: 10,
+        borderRadius: 20,
         alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowOpacity: 0.34,
+        shadowRadius: 6.27,
+        elevation: 10,
     },
     modalContent: {
         width: '100%',
         alignItems: 'center',
     },
     userCard: {
-        backgroundColor: '#292e5a',
+        backgroundColor: '#2d2d5a',
         padding: 20,
-        borderRadius: 10,
+        borderRadius: 15,
         marginBottom: 10,
+        width: '100%',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
+        elevation: 4,
     },
     text: {
         color: '#fff',
         fontSize: 16,
+        marginBottom: 5,
     },
     input: {
         backgroundColor: '#fff',
         padding: 10,
-        borderRadius: 10,
+        borderRadius: 15,
         marginBottom: 20,
         width: '100%',
+        fontSize: 16,
+        borderColor: '#4b5ae1',
+        borderWidth: 1,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
+        elevation: 4,
     },
 });
