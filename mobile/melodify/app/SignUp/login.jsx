@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, TextInput, Pressable } from 'react-native';
-import { Link, router } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+
+  const router = useRouter();
 
   const realizarLogin = async () => {
     try {
@@ -24,7 +26,11 @@ export default function Login() {
 
       if (mensagem === "Usuario logado com sucesso") {
         router.push("/Home/inicio");
-      } 
+      }
+      else if (message === "Admin logado com sucesso!") {
+        router.push('/Admin/pagadmin')
+      }
+ 
       
 
     } catch (error) {

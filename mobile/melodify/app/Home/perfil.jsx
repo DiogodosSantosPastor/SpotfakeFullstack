@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, Pressable, TextInput, Alert, Image } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';  
+import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 
 export default function Perfil({ email }) {
@@ -9,50 +9,49 @@ export default function Perfil({ email }) {
   const [emailUsuario, setEmailUsuario] = useState('');
   const [senhaAntiga, setSenhaAntiga] = useState('');
   const [novaSenha, setNovaSenha] = useState('');
-  const [profileImage, setProfileImage] = useState(null);  
+  const [profileImage, setProfileImage] = useState(null);
 
   const usuarioLogado = email;
 
   const fetchUserProfile = async () => {
     try {
-      const response = await fetch('http://localhost:8000/pesquisa/oneusuario', {
+      const response = await fetch("http://localhost:8000/pesquisa/oneusuario", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email: usuarioLogado }),
+        body: JSON.stringify(formData)
       });
 
-      const data = await response.json();
-
-      if (data) {
-        setNome(data.nome);
-        setSobrenome(data.sobrenome);
-        setEmailUsuario(data.email);
-      } else {
-        console.error('Erro: usuário não encontrado');
-      }
+      const data = await response.json()
+      setUserData(data)
+      setFoto(data.foto)
+      console.log(JSON.stringify(userData))
     } catch (error) {
-      console.error('Erro ao buscar o perfil:', error);
+      console.log(error)
     }
   };
 
+
   const trocarSenha = async () => {
     try {
-      const response = await fetch('http://localhost:8000/pesquisa/trocar-senha', {
-        method: 'POST',
+      const response = await fetch("http://localhost:8000/autenticacao/trocasenha", {
+        method: "PUT",
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          email: emailUsuario,
-          senhaAntiga: senhaAntiga,
-          novaSenha: novaSenha,
-        }),
+        body: JSON.stringify(formData)({
+          "senhaAntiga": senhaAntiga,
+          "novaSenha": novaSenha
+        })
       });
 
-      const mensagem = await response.text();
-      Alert.alert('Resultado', mensagem);
+      const data = await response.text()
+      if (response.ok) {
+        if (data == "Senha atualizada com sucesso.") {
+          alert("Senha atualizada com sucesso.")
+        }
+      }
 
     } catch (error) {
       console.error('Erro ao trocar a senha:', error);
@@ -67,7 +66,7 @@ export default function Perfil({ email }) {
       return;
     }
 
-    
+
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
@@ -76,7 +75,7 @@ export default function Perfil({ email }) {
     });
 
     if (!result.canceled) {
-      setProfileImage(result.assets[0].uri);  
+      setProfileImage(result.assets[0].uri);
     }
   };
 
@@ -155,7 +154,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: '80%',
     alignItems: 'center',
-    marginTop: 80,  
+    marginTop: 80,
   },
   profileIcon: {
     marginBottom: 20,

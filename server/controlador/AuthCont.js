@@ -54,16 +54,28 @@ const login =  async (req, res) => {
     console.log(token)
 
 
-    res.send(
-        "Usuario logado com sucesso"
-    )
-    if(userExiste.nome === "adm" && userExiste.email === "adm"){
-        res.send('Admin logado com sucesso!')
+    
+    if(userExiste.email === "adm" && userExiste.senha === "adm"){
+       return res.send('Admin logado com sucesso!')
     }
     else{
-        res.send('Usuario logado com sucesso')
+       return res.send('Usuario logado com sucesso')
     }
 }
 
+const trocarSenha = async (req, res) => {
+    const data = req.body;
+    const user = await User.findOne({ where: { email: data.email } });
+    if (!user) {
+        res.send("Usuário não encontrado.")
+        return
+    }
 
-export { registro, login }
+    const senhaCriptografada = bcryptjs.hashSync(data.senha, 10);
+
+    user.senha = senhaCriptografada;
+    await user.save();
+    res.send('Senha atualizada com sucesso.')
+}
+
+export { registro, login, trocarSenha }
