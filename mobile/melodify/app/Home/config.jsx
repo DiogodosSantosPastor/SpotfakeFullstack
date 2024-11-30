@@ -8,7 +8,7 @@ export default function Configuracao() {
   return (
     <View style={styles.container}>
       <Pressable style={styles.backButton}>
-        <Ionicons name="arrow-back" size={30} href="./inicio" color="#fff" />
+        <Ionicons name="arrow-back" size={30} href="./home" color="#fff" />
       </Pressable>
 
       <Text style={styles.title}>Configurações</Text>

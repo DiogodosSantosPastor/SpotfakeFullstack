@@ -7,12 +7,12 @@ const Allusuario = async (req, res) => {
 }
 
 const Oneusuario = async (req, res) => {
-    const {email} = req.body
-    if(!email){
+    const data = req.body
+    if(!data.email){
         res.send('Insira o email do usuario que você deseja pesquisar')
         return
     }
-    const findUsuario = await User.findOne({ where: { email: email } })
+    const findUsuario = await User.findOne({ where: { email: data.email }, attributes: ['nome', 'sobreNome', 'email', 'status', 'dataNascimento', 'foto'] })
     res.send(findUsuario)
 }
 
@@ -32,4 +32,21 @@ const Deletaruser = async (req, res) => {
     }
 }
 
-export {Allusuario, Oneusuario, Deletaruser }
+const SaveProfilePic = async (req, res) => {
+    try {
+        const data = req.body
+        const user = await User.findOne({ where: { email: data.email } })
+        if (!user) {
+            return res.send("Usuário não encontrado.")
+        }
+
+        console.log(data.foto)
+        const update = await User.update({ foto: data.foto }, { where: { email: data.email } })
+        res.send('Foto de perfil atualizada com sucesso.')
+    } catch (error) {
+        console.log(error)
+    }
+    
+}
+
+export {Allusuario, Oneusuario, Deletaruser, SaveProfilePic }

@@ -40,18 +40,15 @@ export default function Perfil({ email }) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)({
-          "senhaAntiga": senhaAntiga,
-          "novaSenha": novaSenha
-        })
+        body: JSON.stringify(formData)
       });
 
       const data = await response.text()
-      if (response.ok) {
-        if (data == "Senha atualizada com sucesso.") {
-          alert("Senha atualizada com sucesso.")
-        }
-      }
+            if (response.ok) {
+                if (data == "Senha atualizada com sucesso.") {
+                    alert("Senha atualizada com sucesso.")
+                }
+            }
 
     } catch (error) {
       console.error('Erro ao trocar a senha:', error);

@@ -81,4 +81,27 @@ const exibirMusica = async (req, res) => {
     }
 };
 
-export { listarArtistas, listarAlbuns, exibirAlbum, exibirMusica }
+const getMaisOuvidas = async (req, res) => {
+    try {
+        const musicas = await Musica.findAll({
+            order: [
+                [Sequelize.fn('RANDOM')]
+            ],
+            limit: 5,
+            include: [{
+                model: Artista,
+                attributes: ['id', 'nome']
+            },
+            {
+                model: Album,
+                attributes: ['id', 'coverImageUrl', 'title']
+            }]
+        })
+        return res.json(musicas);
+    } catch (error) {
+        console.error('Erro ao buscar itens aleatórios:', error);
+        return res.status(500).json({ error: 'Erro ao buscar itens aleatórios' });
+    }
+};
+
+export { listarArtistas, listarAlbuns, exibirAlbum, exibirMusica, getMaisOuvidas }
